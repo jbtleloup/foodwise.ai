@@ -1,4 +1,8 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import {
+  GoogleGenerativeAI,
+  HarmBlockThreshold,
+  HarmCategory,
+} from "@google/generative-ai";
 import { getReviewsByRestaurantId } from "@/src/lib/firebase/firestore.js";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp";
 import { getFirestore } from "firebase/firestore";
@@ -11,7 +15,15 @@ export async function GeminiSummary({ restaurantId }) {
   );
 
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    safety_settings: [
+      {
+        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+        threshold: HarmBlockThreshold.BLOCK_NONE,
+      },
+    ],
+  });
 
   const reviewSeparator = "@";
   const prompt = `
@@ -19,7 +31,7 @@ export async function GeminiSummary({ restaurantId }) {
     where each review is separated by a '${reviewSeparator}' character, 
     create a one-sentence summary of what people think of the restaurant. 
     
-    Here are the reviews: ${reviews.map(review => review.text).join(reviewSeparator)}
+    Here are the reviews: ${reviews.map((review) => review.text).join(reviewSeparator)}
   `;
 
   try {
@@ -38,8 +50,8 @@ export async function GeminiSummary({ restaurantId }) {
     if (e.message.includes("403 Forbidden")) {
       return (
         <p>
-          This service account doesn't have permission to talk to Gemini via
-          Vertex
+          This service account doesn&apos;t have permission to talk to Gemini
+          via Vertex
         </p>
       );
     } else {
