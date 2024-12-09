@@ -1,0 +1,14 @@
+env:
+  # Get these values from the Firebase console
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyA24wy6S8_xjo8n1PI5Q2IdLEXnTSWgKc4
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: awesome-test-project-61ab1.firebaseapp.com
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: awesome-test-project-61ab1
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: awesome-test-project-61ab1.firebasestorage.app
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: 447205379490
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: 1:447205379490:web:c7d8bf4bffefe541baf6fb
