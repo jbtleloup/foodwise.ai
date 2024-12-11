@@ -574,3 +574,17 @@ a {
 		font-size: 0.8rem;
 	}
 }
+
+.file-upload {
+	width: 30%;
+	& img {
+		height: 20rem;
+	}
+}
+
+.flex {
+	display: flex;
+	justify-content: space-around;
+	
+	
+}

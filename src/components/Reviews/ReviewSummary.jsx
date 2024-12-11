@@ -1,8 +1,4 @@
-import {
-  GoogleGenerativeAI,
-  HarmBlockThreshold,
-  HarmCategory,
-} from "@google/generative-ai";
+import { getVertexAI, getGenerativeModel } from "firebase/vertexai";
 import { getReviewsByRestaurantId } from "@/src/lib/firebase/firestore.js";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp";
 import { getFirestore } from "firebase/firestore";
@@ -14,14 +10,14 @@ export async function GeminiSummary({ restaurantId }) {
     restaurantId
   );
 
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({
+  const vertexAi = getVertexAI(firebaseServerApp)
+  const model = getGenerativeModel(vertexAi, {
     model: "gemini-1.5-flash",
     safety_settings: [
-      {
-        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-        threshold: HarmBlockThreshold.BLOCK_NONE,
-      },
+      // {
+      //   category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+      //   threshold: HarmBlockThreshold.BLOCK_NONE,
+      // },
     ],
   });
 
