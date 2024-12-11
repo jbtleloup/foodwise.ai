@@ -65,6 +65,7 @@ export default function Header({ initialUser }) {
       </Link>
       {user ? (
         <>
+          <Navbar />
           <div className="profile">
             <p>
               <img
@@ -104,5 +105,23 @@ export default function Header({ initialUser }) {
         </div>
       )}
     </header>
+  );
+}
+
+export function Navbar() {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link href="/">Home</Link>
+        </li>
+        <li>
+          <Link href="/feed">Feed</Link>
+        </li>
+        <li>
+          <Link href="/feed/add">Add</Link>
+        </li>
+      </ul>
+    </nav>
   );
 }
