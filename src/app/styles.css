@@ -109,7 +109,7 @@ header {
     z-index: 99;
   }
 
-  & ul li {
+  & nav ul li {
 	display: inline-block;
 	width: 100px;
 	font-size: 1.5rem;
@@ -696,10 +696,17 @@ margin-top: 30px;
 .number-range {
   font-size: 1.2em;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
 }
 
 .meal-details {
 	padding-top: 50px;
+  & .recipe-text img {
+    width: 150px;
+    height: 150px;
+  }
+  
 }
 
   /* home page */

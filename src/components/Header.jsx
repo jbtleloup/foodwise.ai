@@ -82,12 +82,6 @@ export default function Header({ initialUser }) {
                 <li>{user.displayName}</li>
 
                 <li>
-                  <a href="#" onClick={addFakeRestaurantsAndReviews}>
-                    Add sample restaurants
-                  </a>
-                </li>
-
-                <li>
                   <a href="#" onClick={handleSignOut}>
                     Sign Out
                   </a>
