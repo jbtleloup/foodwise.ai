@@ -1,5 +1,4 @@
 "use client";
-// TODO: Should probably not pass these as props.
 export default function MealDetails({ initialMeals }) {
   return (
     <div className="meal-details">

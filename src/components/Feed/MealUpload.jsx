@@ -4,14 +4,21 @@ import { useState } from "react";
 import { handleMealFormSubmission } from "@/src/app/actions.js";
 import { getVertexAI, getGenerativeModel } from "firebase/vertexai";
 
+const initFormState = {
+  ingredients: "",
+  description: "",
+  image: "",
+  error: "",
+};
+
 // TODO: Should probably not pass these as props.
-export default function MealDetails({ userId, firebaseServerApp }) {
-  const [image, setImage] = useState(null);
+export default function MealUpload({ userId, firebaseServerApp }) {
+  const [formState, setFormState] = useState(initFormState);
   const [geminiAnswer, setGeminiAnswer] = useState("");
 
   const vertexAi = getVertexAI(firebaseServerApp);
   const model = getGenerativeModel(vertexAi, {
-    model: "gemini-1.5-flash",
+    model: "gemini-2.0-flash-exp",
     safety_settings: [
       // {
       //   category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
@@ -23,7 +30,7 @@ export default function MealDetails({ userId, firebaseServerApp }) {
   const updateImage = (event) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      setImage(URL.createObjectURL(file));
+      setFormState((prev) => ({ ...prev, image: URL.createObjectURL(file) }));
     }
   };
 
@@ -31,9 +38,9 @@ export default function MealDetails({ userId, firebaseServerApp }) {
   const formAction = async (formData) => {
     try {
       const formImage = formData.get("image");
+      if (!formImage.name) throw new Error("Image is required");
       const ingredients = formData.get("ingredients");
       const description = formData.get("mealDescription");
-
       // This blocks us from being full server side.
       const imageURL = await updateMealImage(userId, formImage);
 
@@ -41,12 +48,12 @@ export default function MealDetails({ userId, firebaseServerApp }) {
 
       // Do some Gemini stuff.
       const prompt = `
-       Can you tell how many calories this meal represents. Give me a range 
-       in the form <min : max>. Only send the range no other words. 
-       If you can't guess the calory range send back N/A. 
-       This is what I think the ingredients are: ${ingredients}.
-       Other maybe usefull infos about the meal: ${description}.
-      `;
+         Can you tell how many calories this meal represents. Give me a range
+         in the form <min : max>. Only send the range no other words.
+         If you can't guess the calory range send back N/A.
+         This is what I think the ingredients are: ${ingredients}.
+         Other maybe usefull infos about the meal: ${description}.
+        `;
       const imagePart = await fileToGenerativePart(formImage);
       const result = await model.generateContent([prompt, imagePart]);
       const response = result.response;
@@ -62,10 +69,15 @@ export default function MealDetails({ userId, firebaseServerApp }) {
 
       // This is a server action.
       await handleMealFormSubmission(data);
-      // TODO: reset the form. reset issubmited
+      // Reset form on success.
+      resetForm();
     } catch (error) {
       console.log(error);
+      setFormState((prev) => ({ ...prev, error: error.toString() }));
     }
+  };
+  const resetForm = () => {
+    setFormState(initFormState);
   };
 
   return (
@@ -86,13 +98,12 @@ export default function MealDetails({ userId, firebaseServerApp }) {
                 name="image"
                 type="file"
                 id="upload-image"
-                className="file-input hidden w-full h-full"
-                required
+                className="file-input hidden"
               />
 
               <img
                 className="add-image"
-                src={`${image || "/add.svg"}`}
+                src={`${formState.image || "/add.svg"}`}
                 alt="Add image"
               />
             </label>
@@ -106,6 +117,13 @@ export default function MealDetails({ userId, firebaseServerApp }) {
                 name="ingredients"
                 id="review"
                 placeholder="20oz cod, wheat noodle, steamed carrots, sesame oil"
+                value={formState.ingredients}
+                onChange={(e) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    ingredients: e.target.value,
+                  }))
+                }
                 required
               />
             </p>
@@ -115,12 +133,23 @@ export default function MealDetails({ userId, firebaseServerApp }) {
               placeholder="Free form add whatever else is relevant to your meal."
               cols="80"
               rows="5"
+              value={formState.description}
+              onChange={(e) =>
+                setFormState((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
             ></textarea>
           </article>
         </div>
 
         <footer className="meal-form-footer">
           <menu>
+            <p className="error">{formState.error}</p>
+            <button type="button" onClick={resetForm}>
+              Reset
+            </button>
             <button type="submit" value="confirm" className="button--confirm">
               Submit
             </button>

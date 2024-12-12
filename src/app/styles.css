@@ -784,3 +784,10 @@ margin-top: 30px;
     }
   } 
 
+.hidden {
+  visibility: hidden;
+}
+
+.error {
+  color: red;
+}

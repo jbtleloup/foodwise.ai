@@ -61,7 +61,7 @@ export default function Header({ initialUser }) {
     <header>
       <Link href="/" className="logo">
         <img src="/friendly-eats.svg" alt="FriendlyEats" />
-        Friendly Eats
+        FoodWise.ai
       </Link>
       {user ? (
         <>
