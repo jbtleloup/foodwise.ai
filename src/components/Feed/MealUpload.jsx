@@ -3,6 +3,7 @@ import { updateMealImage } from "@/src/lib/firebase/storage";
 import { useState } from "react";
 import { handleMealFormSubmission } from "@/src/app/actions.js";
 import { getVertexAI, getGenerativeModel } from "firebase/vertexai";
+import { firebaseApp } from "@/src/lib/firebase/clientApp";
 
 const initFormState = {
   ingredients: "",
@@ -12,11 +13,10 @@ const initFormState = {
 };
 
 // TODO: Should probably not pass these as props.
-export default function MealUpload({ userId, firebaseServerApp }) {
+export default function MealUpload({ userId }) {
   const [formState, setFormState] = useState(initFormState);
   const [geminiAnswer, setGeminiAnswer] = useState("");
-
-  const vertexAi = getVertexAI(firebaseServerApp);
+  const vertexAi = getVertexAI(firebaseApp);
   const model = getGenerativeModel(vertexAi, {
     model: "gemini-2.0-flash-exp",
     safety_settings: [
