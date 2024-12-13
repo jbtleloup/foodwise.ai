@@ -1,13 +1,8 @@
 import { collection, query, getDocs, where, addDoc } from "firebase/firestore";
 
 export async function addMealInfo(db, mealInfo) {
-  try {
-    const docRef = await addDoc(collection(db, "mealInfo"), mealInfo);
-    console.log("doc was created with id ", docRef.id);
-  } catch (e) {
-    console.log("There was an error adding the document");
-    console.error("Error adding document: ", e);
-  }
+  const docRef = await addDoc(collection(db, "mealInfo"), mealInfo);
+  console.log("doc was created with id ", docRef.id);
 }
 
 export async function getMealsInfoByUser(db = db, userId) {

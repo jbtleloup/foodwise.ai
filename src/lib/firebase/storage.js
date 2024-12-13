@@ -11,15 +11,10 @@ export async function uploadImage(slug, image) {
 }
 
 export async function updateMealImage(userId, image) {
-  try {
-    if (!image || !image.name)
-      throw new Error("A valid image has not been provided.");
+  if (!image || !image.name)
+    throw new Error("A valid image has not been provided.");
 
-    const publicImageUrl = await uploadImage(userId, image);
-    // await updateRestaurantImageReference(restaurantId, publicImageUrl);
+  const publicImageUrl = await uploadImage(userId, image);
 
-    return publicImageUrl;
-  } catch (error) {
-    console.error("Error processing request:", error);
-  }
+  return publicImageUrl;
 }
