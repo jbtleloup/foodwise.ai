@@ -37,6 +37,7 @@ export default function MealUpload({ userId }) {
   // Most of this should be a server action.
   const formAction = async (formData) => {
     try {
+      setGeminiAnswer("loading...");
       const formImage = formData.get("image");
       if (!formImage.name) throw new Error("Image is required");
       const ingredients = formData.get("ingredients");
@@ -73,6 +74,7 @@ export default function MealUpload({ userId }) {
       resetForm();
     } catch (error) {
       console.log(error);
+      setGeminiAnswer("");
       setFormState((prev) => ({ ...prev, error: error.toString() }));
     }
   };
@@ -156,7 +158,7 @@ export default function MealUpload({ userId }) {
           </menu>
         </footer>
       </form>
-      <div>{geminiAnswer}</div>
+      <div className="gemini-answer">{geminiAnswer}</div>
     </>
   );
 }
