@@ -4,6 +4,7 @@ import { useState } from "react";
 import { handleMealFormSubmission } from "@/src/app/actions.js";
 import { getVertexAI, getGenerativeModel } from "firebase/vertexai";
 import { firebaseApp } from "@/src/lib/firebase/clientApp";
+import { flushSync } from "react-dom";
 
 const initFormState = {
   ingredients: "",
@@ -36,14 +37,14 @@ export default function MealUpload({ userId }) {
 
   // Most of this should be a server action.
   const formAction = async (formData) => {
-    try {
+    flushSync(() => {
       setGeminiAnswer("loading...");
+    });
+    try {
       const formImage = formData.get("image");
       if (!formImage.name) throw new Error("Image is required");
       const ingredients = formData.get("ingredients");
       const description = formData.get("mealDescription");
-      // This blocks us from being full server side.
-      const imageURL = await updateMealImage(userId, formImage);
 
       // TODO: addOptimisticMessage(message).
 
@@ -60,6 +61,16 @@ export default function MealUpload({ userId }) {
       const response = result.response;
       const text = response.text();
       setGeminiAnswer(text);
+
+      // Do not upload unvalid data.
+      if (text === "N/A")
+        throw new Error(
+          "Gemini could not determine a range. Please, try again with another image."
+        );
+
+      // This blocks us from being full server side.
+      const imageURL = await updateMealImage(userId, formImage);
+
       const data = {
         ingredients,
         image: imageURL,
@@ -67,7 +78,6 @@ export default function MealUpload({ userId }) {
         userId,
         range: text,
       };
-
       // This is a server action.
       await handleMealFormSubmission(data);
       // Reset form on success.
@@ -101,6 +111,7 @@ export default function MealUpload({ userId }) {
                 type="file"
                 id="upload-image"
                 className="file-input hidden"
+                accept="image/*"
               />
 
               <img
