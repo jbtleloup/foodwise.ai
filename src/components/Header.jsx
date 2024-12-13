@@ -6,7 +6,6 @@ import {
   signOut,
   onAuthStateChanged,
 } from "@/src/lib/firebase/auth.js";
-import { addFakeRestaurantsAndReviews } from "@/src/lib/firebase/firestore.js";
 import { firebaseConfig } from "@/src/lib/firebase/config";
 
 function useUserSession(user) {
@@ -60,7 +59,7 @@ export default function Header({ initialUser }) {
   return (
     <header>
       <Link href="/" className="logo">
-        <img src="/friendly-eats.svg" alt="FriendlyEats" />
+        <img src="/foodwise-logo.png" alt="FriendlyEats" />
         FoodWise.ai
       </Link>
       {user ? (

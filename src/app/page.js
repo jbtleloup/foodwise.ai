@@ -1,4 +1,4 @@
-export default async function Home() {
+export default function Home() {
   return (
     <main className="main__restaurant">
       <section className="hero">
@@ -8,7 +8,10 @@ export default async function Home() {
             Snap a pic, know your intake. Foodwise.ai uses advanced image
             recognition to estimate the calories in your meals.
           </p>
-          <button className="cta-button">Get Started</button>
+          <br></br>
+          <p>
+            <strong>Sign in to get started</strong>
+          </p>
         </div>
         <div className="hero-image">
           <img src="foodwise-home.png" alt="Foodwise AI" />

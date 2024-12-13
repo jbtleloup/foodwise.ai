@@ -9,7 +9,7 @@ export default async function Home() {
   const { currentUser, firebaseServerApp } = await getAuthenticatedAppForUser();
   const meals = await getMealsInfoByUser(
     getFirestore(firebaseServerApp),
-    currentUser.uid
+    currentUser?.uid
   );
 
   return (

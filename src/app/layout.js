@@ -21,7 +21,7 @@ export default async function RootLayout({ children }) {
         <main>{children}</main>
         <footer className="footer">
           <p>
-            &copy; 2023 Foodwise.ai - Made with ❤️ with{" "}
+            &copy; 2024 Foodwise.ai - Made with ❤️ with{" "}
             <a href="https://firebase.google.com/">Firebase</a>
           </p>
         </footer>
