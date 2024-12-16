@@ -1,0 +1,19 @@
+runConfig:
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 5
+
+env:
+  # Get these values from the Firebase console
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: AIzaSyAu_mJxwfd0wUgc7Bh3YXU7bOmMsJOVBtw
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: awesome-test-project-staging.firebaseapp.com
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: awesome-test-project-staging
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: awesome-test-project-staging.firebasestorage.app
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: 331893274819
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: 1:331893274819:web:de6bb20264908762c64a76
